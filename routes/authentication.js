@@ -21,11 +21,11 @@ router.get('/signin', (req, res) => {
 });
 
 router.post('/signin', (req, res, next) => {
-  req.check('nombreUsuario', 'Username is Required').notEmpty();
-  req.check('contrasena', 'Password is Required').notEmpty();
+  req.check('nombreUsuario', 'El nombre del usuario es requerido').notEmpty();
+  req.check('contrasena', 'La contraseña es requerida').notEmpty();
   const errors = req.validationErrors();
   if (errors.length > 0) {
-    req.flash('message', errors[0].msg);
+    req.flash('mensaje', errors[0].msg);
     res.redirect('/signin');
   }
   passport.authenticate('local.signin', {

@@ -5,16 +5,16 @@ const pool = require('../database');
 const helpers = require('./helpers');
 
 passport.use('local.signin', new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password',
+  usernameField: 'nombreUsuario',
+  passwordField: 'contrasena',
   passReqToCallback: true
-}, async (req, username, password, done) => {
-  const rows = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+}, async (req, nombreUsuario, contrasena, done) => {
+  const rows = await pool.query('SELECT * FROM usuarios WHERE nombreUsuario = ?', [nombreUsuario]);
   if (rows.length > 0) {
     const user = rows[0];
-    const validPassword = await helpers.matchPassword(password, user.password)
+    const validPassword = await helpers.matchPassword(contrasena, user.contrasena)
     if (validPassword) {
-      done(null, user, req.flash('success', 'Welcome ' + user.username));
+      done(null, user, req.flash('Éxito', 'Bienvenido ' + user.nombreUsuario));
     } else {
       done(null, false, req.flash('message', 'Incorrect Password'));
     }
@@ -24,20 +24,21 @@ passport.use('local.signin', new LocalStrategy({
 }));
 
 passport.use('local.signup', new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password',
+  usernameField: 'nombreUsuario',
+  passwordField: 'contrasena',
   passReqToCallback: true
-}, async (req, username, password, done) => {
+}, async (req, nombreUsuario, contrasena, done) => {
 
-  const { fullname } = req.body;
+  const { nombreCompleto } = req.body;
   let newUser = {
-    fullname,
-    username,
-    password
+    nombreUsuario,
+    contrasena,
+    nombreCompleto
   };
-  newUser.password = await helpers.encryptPassword(password);
-  // Saving in the Database
-  const result = await pool.query('INSERT INTO users SET ? ', newUser);
+  //Incriptacion de contraseña
+  newUser.contrasena = await helpers.encryptPassword(contrasena);
+  // Guardando en la base de datos
+  const result = await pool.query('INSERT INTO usuarios SET ? ', newUser);
   newUser.id = result.insertId;
   return done(null, newUser);
 }));
@@ -47,7 +48,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const rows = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
+  const rows = await pool.query('SELECT * FROM usuarios WHERE id = ?', [id]);
   done(null, rows[0]);
 });
 
