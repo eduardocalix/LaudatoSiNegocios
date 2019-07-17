@@ -7,7 +7,7 @@ router.get('/add', (req, res) => {
    res.render('articles/add.hbs');
 });
 
-router.post('/add',(req,res)=>{
+router.post('/add', async(req,res)=>{
     const { titulo, nombre, description } = req.body;
     const newLink = {
         titulo,
