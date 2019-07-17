@@ -5,16 +5,17 @@ const pool = require('../database');
 const helpers = require('./helpers');
 
 passport.use('local.signin', new LocalStrategy({
-  usernameField: 'nombreUsuario',
-  passwordField: 'contrasena',
+  nombreUsuarioField: 'nombreUsuario',
+  contrasenaField: 'contrasena',
   passReqToCallback: true
 }, async (req, nombreUsuario, contrasena, done) => {
   const rows = await pool.query('SELECT * FROM usuarios WHERE nombreUsuario = ?', [nombreUsuario]);
   if (rows.length > 0) {
     const user = rows[0];
-    const validPassword = await helpers.matchPassword(contrasena, user.contrasena)
+    const validPassword = await helpers.matchPassword(contrasena, user.contrasena);
+    console.log('Encontrado');
     if (validPassword) {
-      done(null, user, req.flash('Éxito', 'Bienvenido ' + user.nombreUsuario));
+      done(null, user, req.flash('success', 'Bienvenido ' + user.nombreUsuario));
     } else {
       done(null, false, req.flash('message', 'Incorrect Password'));
     }
@@ -38,7 +39,7 @@ passport.use('local.signup', new LocalStrategy({
   //Incriptacion de contraseña
   newUser.contrasena = await helpers.encryptPassword(contrasena);
   // Guardando en la base de datos
-  const result = await pool.query('INSERT INTO usuarios SET ? ', newUser);
+  const result = await pool.query('INSERT INTO usuarios SET ? ', [newUser]);
   newUser.id = result.insertId;
   return done(null, newUser);
 }));
