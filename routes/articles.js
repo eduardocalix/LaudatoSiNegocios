@@ -17,14 +17,16 @@ router.post('/add', isLoggedIn,async(req,res)=>{
         idUsuario: req.user.id
     };
     await pool.query('INSERT INTO articulos set ?', [newLink]);
-    req.flash('Éxito', 'Articulo Guardado Exitosamente');
+    req.flash('sucess', 'Articulo Guardado Exitosamente');
     res.redirect('/articles');
 });
 ///
 router.get('/', isLoggedIn, async (req, res) => {
-    const articles = await pool.query('SELECT * FROM articulos WHERE idUsuario = ?', [req.user.id]);
-    res.render('articles/list', { articles });
-});
+        const articles = await pool.query('SELECT * FROM articulos WHERE idUsuario = ?', [req.user.id]);
+        res.render('articles/list', { articles })}); 
+        
+
+
 
 router.get('/delete/:id',isLoggedIn, async (req, res) => {
     const { id } = req.params;

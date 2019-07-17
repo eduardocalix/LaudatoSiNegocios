@@ -19,7 +19,7 @@ router.post('/signup',passport.authenticate('local.signup', {
 
 // SINGIN
 router.get('/signin',(req, res) => {
-  res.render('auth/signin.hbs');
+  res.render('auth/signin');
   console.log('visto');
 
 });
@@ -32,12 +32,15 @@ router.get('/signin',(req, res) => {
     req.flash('message', errors[0].msg);
     res.redirect('/signin');
   } */
-router.post('/signin', passport.authenticate('local.signin', {
-    successRedirect: '/articles/add',
-    failureRedirect: '/signin',
-    failureFlash: true
-    
-}));
+  router.post('/signin', (req, res, next) => {
+   
+    passport.authenticate('local.signin', {
+      successRedirect: '/profile',
+      failureRedirect: '/signin',
+      failureFlash: true
+    })(req, res, next);
+  });
+  
 
 router.get('/logout', isLoggedIn,(req, res) => {
   req.logOut();

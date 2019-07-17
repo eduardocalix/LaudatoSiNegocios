@@ -3,8 +3,8 @@ const morgan = require('morgan');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-//const { check, validationResult } = require('express-validator');
-//const passport = require('passport');
+//const validator = require('express-validator');
+const passport = require('passport');
 const flash = require('connect-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const bodyParser = require('body-parser');
@@ -13,7 +13,7 @@ const { database } = require('./keys');
 
 // Intializations
 const app = express();
-const passport = require('./controllers/passport.js');
+require('./controllers/passport.js');
 
 //Configuraciones del puerto del servidor
 app.set('port',process.env.PORT || 4000);
