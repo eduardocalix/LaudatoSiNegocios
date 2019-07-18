@@ -3,7 +3,7 @@ const router = express.Router();
 
 const passport = require('passport');
 const { isLoggedIn, isNotLoggedIn } = require('../controllers/auth');
-console.log('visto');
+
 
 // SIGNUP
 router.get('/signup',(req, res) => {
@@ -39,15 +39,16 @@ router.get('/signin',(req, res) => {
       failureRedirect: '/signin',
       failureFlash: true
     })(req, res, next);
+
   });
   
 
-router.get('/logout', isLoggedIn,(req, res) => {
+router.get('/logout',(req, res) => {
   req.logOut();
   res.redirect('/signin');
 });
 
-router.get('/profile', (req, res) => {
+router.get('/profile', isLoggedIn,(req, res) => {
   res.render('profile');
 });
 

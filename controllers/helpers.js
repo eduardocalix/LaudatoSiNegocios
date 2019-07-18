@@ -11,12 +11,11 @@ helpers.encryptPassword = async (contrasena) => {
   return hash;
 };
 //Decifrado de Contraseña
-helpers.matchPassword = async (contrasena, savedPassword) => {
+helpers.matchPassword = async (contrasena, contrasenaGuardada) => {
   try {
-    return await bcrypt.compare(contrasena, savedPassword);
+    return await bcrypt.compare(contrasena, contrasenaGuardada);
   } catch (e) {
     console.log(e);  
-    
   }
 };
 

@@ -3,46 +3,47 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn, isNotLoggedIn } = require('../controllers/auth');
 
-
-router.get('/add',isLoggedIn, (req, res) => {
+//Renderiza la vista de agregar
+router.get('/add', (req, res) => {
     //res.send('Hola');
    res.render('articles/add.hbs');
 });
-
-router.post('/add', isLoggedIn,async(req,res)=>{
+//Obtiene los datos del formulario agregar archivo
+router.post('/add',async(req,res)=>{
     const { titulo, articuloEscrito} = req.body;
     const newLink = {
         titulo, 
         articuloEscrito,
         idUsuario: req.user.id
     };
+
     await pool.query('INSERT INTO articulos set ?', [newLink]);
     req.flash('sucess', 'Articulo Guardado Exitosamente');
     res.redirect('/articles');
 });
-///
-router.get('/', isLoggedIn, async (req, res) => {
-        const articles = await pool.query('SELECT * FROM articulos WHERE idUsuario = ?', [req.user.id]);
-        res.render('articles/list', { articles })}); 
-        
-
-
-
-router.get('/delete/:id',isLoggedIn, async (req, res) => {
-    const { id } = req.params;
-    await pool.query('DELETE FROM articulos WHERE id = ?', [id]);
-    req.flash('Éxito', 'Articulo Eliminado Exitosamente');
-    res.redirect('/articles');
+///Lista cada articulo de la base de datos
+ router.get('/', async (req, res) => {  
+    const articles1 = await pool.query('SELECT * FROM articulos');
+    res.render('articles/listAll.hbs', { articles1 });
 });
 
-router.get('/edit/:id', isLoggedIn,async (req, res) => {
+//Controlador para eliminar de la base de datos
+router.get('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    await pool.query('DELETE FROM articulos WHERE idArticulo = ?', [id]);
+    req.flash('sucess', 'Articulo Eliminado Exitosamente');
+    res.redirect('/articles');
+});
+//Controlador que sirve para editar los articulos de la base
+router.get('/edit/:id', async (req, res) => {
     const { id } = req.params;
     const articles = await pool.query('SELECT * FROM articulos WHERE id = ?', [id]);
     console.log(articles);
     res.render('articles/edit', {articles: articles[0]});
 });
 
-router.post('/edit/:id', isLoggedIn,async (req, res) => {
+//metodo que obtiene los datos a modificar
+router.post('/edit/:id',async (req, res) => {
     const { id } = req.params;
     const { titulo, articuloEscrito} = req.body;
     const newLink = {
@@ -50,8 +51,8 @@ router.post('/edit/:id', isLoggedIn,async (req, res) => {
         articuloEscrito,
         idUsuario: req.user.id
     };
-    await pool.query('UPDATE articulos set ? WHERE id = ?', [newLink, id]);
-    req.flash('Éxito', 'Articulo Guardado Exitosamente');
+    await pool.query('UPDATE articulos set ? WHERE idArticulo = ?', [newLink, id]);
+    req.flash('success', 'Articulo Guardado Exitosamente');
     res.redirect('/articles');
 });
 

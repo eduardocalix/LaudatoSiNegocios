@@ -1,10 +1,12 @@
+//Se importa el modulo de MYSQL
 const mysql = require('mysql');
 const { promisify }= require('util');
 
 const { database } = require('./keys');
 
 const pool = mysql.createPool(database);
-
+//Función que nos dice si la base es conectada correctamente
+//Con un if se muestran los posibles errores y los mensajes de cada error
 pool.getConnection((err, connection) => {
   if (err) {
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
@@ -24,7 +26,7 @@ pool.getConnection((err, connection) => {
   return;
 });
 
-// Promisify Pool Querys
+// Promesa del query  pool
 pool.query = promisify(pool.query);
 
 module.exports = pool;
