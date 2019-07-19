@@ -29,7 +29,6 @@ CREATE TABLE Articulos (
   idArticulo INT(11) NOT NULL,
   titulo VARCHAR(150) NOT NULL,
   articuloEscrito TEXT NOT NULL,
-  url VARCHAR(255) NOT NULL,
   fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   idUsuario INT(11),
   created_at timestamp NOT NULL DEFAULT current_timestamp,

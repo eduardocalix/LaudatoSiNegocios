@@ -1,0 +1,29 @@
+<div class="container p-12">
+    <div class="row">
+        {{#each articles1}}
+        <div class="col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <a target="_blank">
+                        <h1 class="card-title text-uppercase">
+                            {{titulo}}
+                        </h1>
+                    </a>
+                    <p class="m-2">{{articuloEscrito}}</p>
+                    <h4>{{nombreCompleto}} </h4>
+                    <p class="text-muted">
+                        {{timeago created_at}}
+                    </p>                  
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+            <div class="card card-body text-center">
+                <p>No tienes articulos guardados todavia.</p>
+                <a href="/articles/add">Crear Uno!</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
