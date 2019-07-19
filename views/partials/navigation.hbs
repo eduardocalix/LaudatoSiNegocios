@@ -13,6 +13,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         {{#if user}}
+         <li class="navbar-brand">
+          <a class="nav-link" href="/Profile">{{user.nombreCompleto}}</a>
+
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -30,6 +34,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/logout">Cerrar Sesión</a>
         </li>
+        
         {{else}}
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -37,7 +42,7 @@
           Articulos
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/articles">Todos los articulos</a>
+            <a class="dropdown-item" href="/articles/listAll">Todos los articulos</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/articles/add">Agregar un Articulo</a>
           </div>
@@ -48,6 +53,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/signup">Crear Cuenta</a>
         </li>
+       
         {{/if}}
       </ul>
     </div>

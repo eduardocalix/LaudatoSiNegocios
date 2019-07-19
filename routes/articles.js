@@ -22,8 +22,8 @@ router.post('/add',async(req,res)=>{
     res.redirect('/articles');
 });
 ///Lista cada articulo de la base de datos
- router.get('/', async (req, res) => {  
-    const articles1 = await pool.query('SELECT * FROM articulos');
+ router.get('/listAll', async (req, res) => {  
+    const articles1 = await pool.query('SELECT titulo,articuloEscrito,nombreCompleto,created_at FROM articulos INNER JOIN usuarios ON articulos.idUsuario=usuarios.id ');
     res.render('articles/listAll', { articles1 });
 });
 
@@ -35,7 +35,7 @@ router.get('/', isLoggedIn,async (req, res) => {
 });
 
 //Controlador para eliminar de la base de datos
-router.get('/delete/id', async (req, res) => {
+router.get('/delete/:id', async (req, res) => {
     const { id } = req.params;
     await pool.query('DELETE FROM articulos WHERE idArticulo = ?', [id]);
     req.flash('success', 'Articulo Eliminado Exitosamente');
@@ -44,9 +44,9 @@ router.get('/delete/id', async (req, res) => {
 //Controlador que sirve para editar los articulos de la base
 router.get('/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const articles = await pool.query('SELECT * FROM articulos WHERE id = ?', [id]);
-    console.log(articles);
-    res.render('articles/edit', {articles: articles[0]});
+    const articles2 = await pool.query('SELECT * FROM articulos WHERE idArticulo = ?', [id]);
+    console.log(articles2);
+    res.render('articles/edit', {articles: articles2[0]});
 });
 
 //metodo que obtiene los datos a modificar
@@ -55,12 +55,12 @@ router.post('/edit/:id',async (req, res) => {
     const { titulo, articuloEscrito} = req.body;
     const newLink = {
         titulo, 
-        articuloEscrito,
-        idUsuario: req.user.id
+        articuloEscrito
+        
     };
     await pool.query('UPDATE articulos set ? WHERE idArticulo = ?', [newLink, id]);
     req.flash('success', 'Articulo Guardado Exitosamente');
-    res.redirect('articles/list');
+    res.redirect('/articles');
 });
 
 module.exports = router;
