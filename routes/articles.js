@@ -23,9 +23,33 @@ router.post('/add',async(req,res)=>{
 });
 ///Lista cada articulo de la base de datos
  router.get('/listAll', async (req, res) => {  
-    const articles1 = await pool.query('SELECT titulo,articuloEscrito,nombreCompleto,created_at FROM articulos INNER JOIN usuarios ON articulos.idUsuario=usuarios.id ');
+    const articles1 = await pool.query('SELECT titulo,articuloEscrito,nombreCompleto,created_at,idUsuario FROM articulos INNER JOIN usuarios ON articulos.idUsuario=usuarios.id ');
     res.render('articles/listAll', { articles1 });
 });
+
+router.get('/comment/:id',async(req,res)=>{
+
+    const articles2 = await pool.query('SELECT * FROM articulos WHERE idArticulo = ?', [id]);
+  res.render('articles/comment');
+    
+});
+
+router.post('/comment/:id',async(req,res)=>{
+    const { id } = req.params;
+    const { comentarioEscrito} = req.body;
+   
+    const newLink = {
+        comentarioEscrito,
+        idUsuario: req.user.id,
+        idArticulo:id
+    };
+
+    await pool.query('INSERT INTO comentario set ?', [newLink]);
+    req.flash('success', 'Articulo Guardado Exitosamente');
+    res.redirect('articles/listAll');
+});
+
+
 
 router.get('/', isLoggedIn,async (req, res) => {
     
@@ -52,7 +76,7 @@ router.get('/edit/:id', async (req, res) => {
 //metodo que obtiene los datos a modificar
 router.post('/edit/:id',async (req, res) => {
     const { id } = req.params;
-    const { titulo, articuloEscrito} = req.body;
+    const { titulo, articuloEscrito } = req.body;
     const newLink = {
         titulo, 
         articuloEscrito
