@@ -23,7 +23,7 @@ const { database } = require('./keys');
 
 // Intializations
 const app = express();
-require('./controllers/passport');
+require('./controllers/passport.js');
 
 //Configuraciones del puerto del servidor
 app.set('port',process.env.PORT || 4000);
@@ -36,7 +36,7 @@ app.engine('.hbs', exphbs({
   layoutsDir: path.join(app.get('views'), 'layouts'),
   partialsDir: path.join(app.get('views'), 'partials'),
   extname: '.hbs',
-  helpers: require('./controllers/handlebars')
+  helpers: require('./controllers/handlebars.js')
 }));
 app.set('view engine','.hbs');
 //Midlewares

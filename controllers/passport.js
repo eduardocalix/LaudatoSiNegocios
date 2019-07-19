@@ -2,11 +2,11 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const pool = require('../database');
-const helpers = require('./helpers');
+const helpers = require('./helpers.js');
 
 passport.use('local.signin', new LocalStrategy({
-  nombreusuarioField: 'nombreUsuario',
-  contrasenaField: 'contrasena',
+  usernameField: 'nombreUsuario',
+  passwordField: 'contrasena',
   passReqToCallback: true
 }, async (req, nombreUsuario, contrasena, done) => {
   const rows = await pool.query('SELECT * FROM usuarios WHERE nombreUsuario = ?', [nombreUsuario]);
@@ -17,6 +17,7 @@ passport.use('local.signin', new LocalStrategy({
     console.log(user.id);
     if (validPassword) {
       done(null, user, req.flash('success', 'Bienvenido ' + user.nombreUsuario));
+      flash('message','Mensaje correcto');
       console.log(user.nombreUsuario);
     } else {
       done(null, false, req.flash('message', 'Incorrect Password'));
@@ -27,8 +28,8 @@ passport.use('local.signin', new LocalStrategy({
 }));
 
 passport.use('local.signup', new LocalStrategy({
-  nombreusuarioField: 'nombreUsuario',
-  contrasenaField: 'contrasena',
+  usernameField: 'nombreUsuario',
+  passwordField: 'contrasena',
   passReqToCallback: true
 }, async (req, nombreUsuario, contrasena, done) => {
 

@@ -2,13 +2,13 @@ module.exports = {
     isLoggedIn (req, res, next) {
         if (req.isAuthenticated()) {
             return next();
-        }
-        return res.redirect('/signin');
+        }else{
+        return res.redirect('/signin');}
     },
     isNotLoggedIn(req,res,next){
         if (!req.isAuthenticated()) {
             return next();
-        }
-        return res.redirect('/profile');
+        }else{
+        return res.redirect('/profile');}
     }
 };

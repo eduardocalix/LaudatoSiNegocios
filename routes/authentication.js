@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const passport = require('passport');
-const { isLoggedIn, isNotLoggedIn } = require('../controllers/auth');
+const { isLoggedIn, isNotLoggedIn } = require('../controllers/auth.js');
 
 
 // SIGNUP
 router.get('/signup',(req, res) => {
-  res.render('auth/signup.hbs');
+  res.render('auth/signup');
   console.log('visto');
 });
 
@@ -48,7 +48,7 @@ router.get('/logout',(req, res) => {
   res.redirect('/signin');
 });
 
-router.get('/profile', isLoggedIn,(req, res) => {
+router.get('/profile',(req, res) => {
   res.render('profile');
 });
 

@@ -1049,7 +1049,7 @@ grid-area:contactos;
 }
 
 
-  .footer{
+  .footer3{
     /* position: absolute; */
     bottom: 0;
     align-self: flex-end;
@@ -1064,18 +1064,18 @@ grid-area:contactos;
 }
 
 
-.footer p {
+.footer3 p {
     color: var(--blanco);
     font-size: 3rem;
 }
 @media (max-width:768px) {
-    .footer p {
+    .footer3 p {
         color: var(--blanco);
         font-size: 1rem;
     }
 
 }
-.copyright{
+.copyright3{
     font-family: var(--fuenteSecundaria);
 }
 
